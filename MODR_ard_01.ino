@@ -27,7 +27,7 @@
 
 // declarations
 int del = 1200;
-int spe = 150;
+int spe = 105;
 int msg = '0';
 int LED = 13;
 char data = 0;
@@ -81,14 +81,14 @@ void dir_right(){
   analogWrite(lef_pwm,spe);
 
   digitalWrite(rig_dir_a,LOW);
-  digitalWrite(rig_dir_b,LOW);
+  digitalWrite(rig_dir_b,HIGH);
   analogWrite(rig_pwm,spe);
   
 }
 
 void dir_left(){
   
-  digitalWrite(lef_dir_a,LOW);
+  digitalWrite(lef_dir_a,HIGH);
   digitalWrite(lef_dir_b,LOW);
   analogWrite(lef_pwm,spe);
 
@@ -156,17 +156,17 @@ void setup() {
 
 void loop(){
   
-   if(Serial.available() > 0)      // Send data only when you receive data:
-   {
+   if(Serial.available() > 0){
+    
       data = Serial.read();        //Read the incoming data & store into data
       Serial.print(data);          //Print Value inside data in Serial monitor
       Serial.print("\n");        
 
-      if(data == '0'){
+      if (data == '0'){
         dir_stop();
       }
       
-      else if(data == '1'){
+      else if (data == '1'){
         dir_front();
       }
 
@@ -178,9 +178,15 @@ void loop(){
         dir_back();
       }
       
-      else if(data == '4'){
+      else if (data == '4'){
          dir_left();
       }
+      else if (data == '5'){
+        spe = spe + 50;
+      }
+   }
+   else if (spe >= 255){
+    spe = 105;
    }
 }
 
